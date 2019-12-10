@@ -16,7 +16,7 @@
 			          :unread="head.isUnseen"
 			          :order="recentHeads.length - index"
 			          :index="index"
-			          @click.native="selectChat(head.id, index)"></ChatHead>
+			          @select="selectChat(head.id, index)"></ChatHead>
 			<ChatHead :all-visible.sync="headsOpen"
 			          :key="'new-message'"
 			          :images="[newMessageImage]"

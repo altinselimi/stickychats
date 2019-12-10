@@ -5,7 +5,10 @@
 	     	'is-unread': unread,
 	     	'has-blur': !allVisible && index > 0,
 	     	'multiple': filteredImages.length > 1
-	     }">
+	     }"
+	     @mousedown="handleMouseDown"
+	     @mousemove="handleMouseMove"
+	     @mouseup="handleMouseUp">
 		<div class="chat-head__item"
 		     :class="{'multiple': filteredImages.length > 1, 'custom-size': customSize}">
 			<div v-for="image in filteredImages"
@@ -52,7 +55,18 @@ export default {
 				return `translateX(0)`;
 			}
 		},
-	}
+	},
+	methods: {
+		handleMouseDown() {
+			this.isDragging = false;
+		},
+		handleMouseMove() {
+			this.isDragging = true;
+		},
+		handleMouseUp() {
+			if(this.isDragging === false) this.$emit('select');
+		},
+	},
 }
 </script>
 <style lang="scss">
