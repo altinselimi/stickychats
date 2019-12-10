@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="256px" height="256px" viewBox="0 0 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
+    <title>icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="33.8254229%" y1="11.8691386%" x2="77.4177106%" y2="97.1919864%" id="linearGradient-1">
+            <stop stop-color="#00ADFF" offset="0%"></stop>
+            <stop stop-color="#006CFF" offset="100%"></stop>
+        </linearGradient>
+        <circle id="path-2" cx="112" cy="112" r="112"></circle>
+        <filter x="-3.1%" y="-2.2%" width="106.2%" height="106.2%" filterUnits="objectBoundingBox" id="filter-3">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.370754076 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group" transform="translate(16.000000, 16.000000)">
+            <g id="Oval">
+                <use fill="black" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-2"></use>
+                <use fill="url(#linearGradient-1)" fill-rule="evenodd" xlink:href="#path-2"></use>
+            </g>
+            <g id="facebook-messenger" transform="translate(62.000000, 49.000000)" fill="#0084FF" fill-rule="nonzero" stroke="#FFFFFF" stroke-width="14">
+                <path d="M26.9359974,95.6491042 C30.6099537,98.0417415 33.2018539,99.6039596 34.5376914,100.256537 C37.1970353,101.555667 41.0290364,103.126923 45.9906303,104.942357 C50.9869088,106.301267 56.1920147,107 61.5,107 C91.7134208,107 116,84.4905024 116,57 C116,29.5094976 91.7134208,7 61.5,7 C31.2865792,7 7,29.5094976 7,57 C7,72.1293072 14.3783792,86.1828092 26.9359974,95.6491042 Z" id="Shape"></path>
+            </g>
+            <g id="Path-2" transform="translate(48.000000, 47.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                <path d="M64.5,0 C28.8775714,0 0,26.9457099 0,60.1851852 C0,79.125463 9.37934161,96.0198457 24.0372671,107.052191 L24.0372671,130 L45.9989161,117.853426 C51.8600031,119.488056 58.0692298,120.37037 64.5,120.37037 C100.122429,120.37037 129,93.4246605 129,60.1851852 C129,26.9457099 100.122429,0 64.5,0 Z" id="Path"></path>
+            </g>
+            <polygon id="Path" fill="#0083FF" points="118.909938 128.049383 102.484472 110.395062 70.4347826 128.049383 105.689441 90.3333333 122.515528 107.987654 154.164596 90.3333333"></polygon>
+        </g>
+    </g>
+</svg>
