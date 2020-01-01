@@ -14,9 +14,11 @@
 			          :key="head.name"
 			          :images="head.images"
 			          :unread="head.isUnseen"
+			          :hidden="head.isHidden"
 			          :order="recentHeads.length - index"
 			          :index="index"
-			          @select="selectChat(head.id, index)"></ChatHead>
+			          @select="selectChat(head.id, index)"
+			          @hide="hideChat(head.id, index)"></ChatHead>
 			<ChatHead :all-visible.sync="headsOpen"
 			          :key="'new-message'"
 			          :images="[newMessageImage]"
@@ -61,13 +63,21 @@ export default {
 			return this.heads.slice(0, 4).sort(a => {
 				return a.isActive === true ? -1 : 0;
 			});
+/*			.filter(c => {
+				let isClosedIdx = this.closedHeads.indexOf(c.id) > -1;
+				if(isClosedIdx && c.isUnseen) {
+					this.closedHeads.splice(isClosedIdx, 1);
+				} else if (isClosedIdx && !c.isUnseen) {
+					return false;
+				}
+				return true;
+			});*/
 		},
 	},
 	created() {
 		console.log('Created hook');
 		Mousetrap.bind(['command+l', 'ctrl+l'], () => {
 			this.clearSession();
-
 			// return false to prevent default behavior and stop event from bubbling
 			return false
 		})
@@ -105,6 +115,7 @@ export default {
 	},
 	data: () => ({
 		heads: null,
+		closedHeads: [],
 		loggedIn: null,
 		isLoading: false,
 		webviewStatus: null,
@@ -129,7 +140,6 @@ export default {
 		},
 		handleWindowTransparentStates() {
 			if (this.blurListennerAttached) return;
-			console.log(Object.keys(remote));
 			let win = remote.getCurrentWindow();
 			win.on('blur', () => {
 				if (!this.loggedIn) return;
@@ -164,6 +174,9 @@ export default {
 			`);
 
 			this.headsOpen = false;
+		},
+		hideChat(id, index) {
+			this.closedHeads.push(id);
 		},
 		updateUserStatus(message) {
 			let newValue = false;

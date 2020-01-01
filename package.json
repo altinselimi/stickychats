@@ -2,7 +2,7 @@
   "name": "chatheads",
   "version": "0.0.1",
   "author": "Altin Selimi <selimialtin@gmail.com>",
-  "description": "Chatheads helps you stay out of the timeline and use the messaging part instead",
+  "description": "Chatheads is a very convenient way to keep in touch with your friends and loved ones.",
   "license": null,
   "main": "./dist/electron/main.js",
   "scripts": {
@@ -18,7 +18,7 @@
   },
   "build": {
     "productName": "chatheads",
-    "appId": "com.chatheads.app",
+    "appId": "com.chatheadsapp",
     "directories": {
       "output": "build"
     },

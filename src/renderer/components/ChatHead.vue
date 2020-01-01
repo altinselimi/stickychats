@@ -8,7 +8,8 @@
 	     }"
 	     @mousedown="handleMouseDown"
 	     @mousemove="handleMouseMove"
-	     @mouseup="handleMouseUp">
+	     @mouseup="handleMouseUp"
+	     @dblclick="hideChatHeead">
 		<div class="chat-head__item"
 		     :class="{'multiple': filteredImages.length > 1, 'custom-size': customSize}">
 			<div v-for="image in filteredImages"
@@ -25,7 +26,7 @@
 </template>
 <script>
 export default {
-	props: ['images', 'name', 'unread', 'order', 'index', 'allVisible', 'customSize'],
+	props: ['images', 'name', 'unread', 'order', 'index', 'allVisible', 'customSize', 'hidden'],
 	computed: {
 		hasImage() {
 			return !!this.images && this.images.length > 0;
@@ -56,6 +57,9 @@ export default {
 			}
 		},
 	},
+	data: () => ({
+		isDragging: false,
+	}),
 	methods: {
 		handleMouseDown() {
 			this.isDragging = false;
@@ -64,7 +68,15 @@ export default {
 			this.isDragging = true;
 		},
 		handleMouseUp() {
-			if(this.isDragging === false) this.$emit('select');
+			if(this.isDragging === false) {
+				setTimeout(() => {
+					!this.hidden && this.$emit('select');
+				}, 200);
+			}
+			this.isDragging = false;
+		},
+		hideChatHeead() {
+			this.$emit('hide');
 		},
 	},
 }

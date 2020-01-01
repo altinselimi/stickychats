@@ -1,10 +1,12 @@
 import { app, BrowserWindow } from 'electron'
 
+const isProd = process.env.NODE_ENV !== 'development';
+
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
-if (process.env.NODE_ENV !== 'development') {
+if (isProd) {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 
@@ -26,11 +28,11 @@ function createWindow() {
       nodeIntegration: true,
       webSecurity: false,
       webviewTag: true,
-      devTools: false,
+      devTools: isProd ? false : true,
     },
     transparent: true,
     frame: false,
-    alwaysOnTop: true,
+    alwaysOnTop: isProd ? true : false,
     hasShadow: false
   })
 

@@ -5,17 +5,38 @@
 </template>
 <script>
 import { remote } from 'electron';
+const isProd = process.env.NODE_ENV !== 'development';
 
 export default {
 	created() {
 		let win = remote.getCurrentWindow();
 		window.addEventListener('mousemove', event => {
 			if (event.target === document.documentElement) {
-				win.setIgnoreMouseEvents(true, { forward: true }) // {forward: true} keeps generating MouseEvents
+				isProd && win.setIgnoreMouseEvents(true, { forward: true }) // {forward: true} keeps generating MouseEvents
 			} else {
 				win.setIgnoreMouseEvents(false)
 			}
 		});
+
+		let head = document.getElementsByTagName('head')[0];
+
+		let analyticsScript = document.createElement('script');
+		analyticsScript.type = 'text/javascript';
+		analyticsScript.src = 'https://www.googletagmanager.com/gtag/js?id=UA-154349844-2';
+
+		analyticsScript.onload = function() {
+			let analyticsInit = document.createElement('script');
+			analyticsInit.type = 'text/javascript';
+			analyticsInit.text = `
+				window.dataLayer = window.dataLayer || [];
+		      	function gtag(){dataLayer.push(arguments);}
+		      	gtag('js', new Date());
+		      	gtag('config', 'UA-154349844-2');
+			`;
+			document.body.appendChild(analyticsInit);
+		}
+
+		document.body.appendChild(analyticsScript);
 	},
 	name: 'chatheads'
 }
