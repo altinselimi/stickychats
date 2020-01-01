@@ -1,8 +1,8 @@
 {
-  "name": "chatheads",
+  "name": "stickychats",
   "version": "0.0.1",
   "author": "Altin Selimi <selimialtin@gmail.com>",
-  "description": "Chatheads is a very convenient way to keep in touch with your friends and loved ones.",
+  "description": "StickyChats is a facebook messenger client which brings you the chat heads experience to your desktop computer.",
   "license": null,
   "main": "./dist/electron/main.js",
   "scripts": {
@@ -17,8 +17,8 @@
     "postinstall": ""
   },
   "build": {
-    "productName": "chatheads",
-    "appId": "com.chatheadsapp",
+    "productName": "StickyChats",
+    "appId": "com.stickychats",
     "directories": {
       "output": "build"
     },
