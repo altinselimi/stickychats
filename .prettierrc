@@ -1,0 +1,10 @@
+trailingComma: 'es5'
+bracketSpacing: true
+tabWidth: 4
+overrides:
+    - files:
+        - "package.json"
+        - ".eslintrc.js"
+        - "*.yml"
+      options:
+          tabWidth: 2
