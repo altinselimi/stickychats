@@ -17,6 +17,10 @@
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
     "postinstall": ""
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/altinselimi/stickychats.git"
+  },
   "dependencies": {
     "axios": "^0.18.0",
     "electron-updater": "^4.2.0",
@@ -47,9 +51,10 @@
     "del": "^3.0.0",
     "devtron": "^1.4.0",
     "electron": "^7.1.3",
-    "electron-builder": "^21.2.0",
+    "electron-builder": "^22.3.2",
     "electron-debug": "^3.0.1",
     "electron-devtools-installer": "^2.2.4",
+    "electron-notarize": "^0.2.1",
     "file-loader": "^1.1.11",
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "0.4.0",

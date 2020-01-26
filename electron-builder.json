@@ -1,0 +1,44 @@
+{
+  "productName": "StickyChats",
+  "appId": "com.stickychats",
+  "publish": {
+    "provider": "github",
+    "token": "bc8030a3630caadca9d6668ba2e327aa9d831722"
+  },
+  "directories": {
+    "output": "build"
+  },
+  "files": [
+    "dist/electron/**/*"
+  ],
+  "afterSign": "./notarize.js",
+  "dmg": {
+    "sign": false,
+    "contents": [
+      {
+        "x": 410,
+        "y": 150,
+        "type": "link",
+        "path": "/Applications"
+      },
+      {
+        "x": 130,
+        "y": 150,
+        "type": "file"
+      }
+    ]
+  },
+  "mac": {
+    "icon": "build/icons/icon.icns",
+    "hardenedRuntime" : true,
+    "gatekeeperAssess": false,
+    "entitlements": "build/entitlements.mac.plist",
+    "entitlementsInherit": "build/entitlements.mac.plist"
+  },
+  "win": {
+    "icon": "build/icons/icon.ico"
+  },
+  "linux": {
+    "icon": "build/icons"
+  }
+}
