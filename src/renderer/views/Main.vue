@@ -106,7 +106,7 @@ export default {
 	mounted() {
 		const webview = document.querySelector("#messengerWebView");
 		webview.addEventListener("dom-ready", () => {
-			webview.openDevTools();
+			this.isDev && webview.openDevTools();
 			webview.addEventListener("console-message", e => {
 				if (e.message.includes("userStatus")) {
 					this.updateUserStatus(e.message);
