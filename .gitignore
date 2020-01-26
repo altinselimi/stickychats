@@ -7,6 +7,6 @@ node_modules/
 npm-debug.log
 npm-debug.log.*
 thumbs.db
-electron-builder.yaml
+electron-builder.*
 *.env
 !.gitkeep
