@@ -52,6 +52,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "electron-updater": "^4.2.0",
     "faker": "^4.1.0",
     "json-server": "^0.15.1",
     "mousetrap": "^1.6.3",

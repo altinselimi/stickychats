@@ -23,5 +23,7 @@ h5.suggestion {
 	text-align: center;
 	border-bottom-right-radius: 0px;
 	border-bottom-left-radius: 0px;
+	pointer-events:all;
+	-webkit-app-region: drag;
 }
 </style>

@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
 
 const isProd = process.env.NODE_ENV !== 'development';
 
@@ -69,14 +69,18 @@ app.on('activate', () => {
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-electron-builder.html#auto-updating
  */
 
-/*
+
 import { autoUpdater } from 'electron-updater'
 
 autoUpdater.on('update-downloaded', () => {
-  autoUpdater.quitAndInstall()
+  mainWindow.webContents.send('update_downloaded');
 })
 
 app.on('ready', () => {
   if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
 })
- */
+
+ipcMain.on('restart_app', () => {
+  autoUpdater.quitAndInstall();
+});
+ 

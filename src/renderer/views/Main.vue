@@ -10,7 +10,12 @@
 		<Suggestion
 			v-if="loggedIn === false && !isLoading"
 			:message="loggedOutMessage"
-			style="pointer-events:all;-webkit-app-region: drag;"
+		/>
+		<Suggestion
+			id="update-suggestion"
+			v-if="updateAvailable && loggedIn"
+			@click.native="updateApp()"
+			:message="updateAvailableMessage"
 		/>
 		<div
 			v-if="recentHeads"
@@ -53,7 +58,7 @@
 	</div>
 </template>
 <script>
-import { remote } from "electron";
+import { remote, ipcRenderer } from "electron";
 import { createNamespacedHelpers } from 'vuex';
 var Mousetrap = require("mousetrap");
 import faker from "faker";
@@ -93,6 +98,10 @@ export default {
 			// return false to prevent default behavior and stop event from bubbling
 			return false;
 		});
+		ipcRenderer.on('update_downloaded', () => {
+		  ipcRenderer.removeAllListeners('update_downloaded');
+		  this.updateAvailable = true;
+		});
 	},
 	mounted() {
 		const webview = document.querySelector("#messengerWebView");
@@ -130,6 +139,8 @@ export default {
 				}
 				else {
 					console.log('userStatus__loggedOut');
+					let rememberInput = document.querySelector('input[name="persistent"]');
+					if(rememberInput) rememberInput.click();
 				}
 			`);
 		});
@@ -144,10 +155,15 @@ export default {
 		blurListennerAttached: false,
 		hideWebView: false,
 		newMessageImage: base64AddIcon,
-		loggedOutMessage: `Please complete the login procedure in the Messenger.com window below.`
+		loggedOutMessage: `Please complete the login procedure in the Messenger.com window below.`,
+		updateAvailableMessage: `Click here to update StickyChats`,
+		updateAvailable: false,
 	}),
 	methods: {
 		...mapActions(['updateWebviewId']),
+		updateApp() {
+			ipcRenderer.send('restart_app');
+		},
 		logUserOut() {
 			console.log('Logging out function called');
 			// need to have the settings button visible
@@ -414,5 +430,12 @@ webview {
 		border-radius: 8px;
 		overflow: hidden;
 	}
+}
+
+#update-suggestion {
+	background-color: var(--theme);
+	align-self: center;
+	border-radius: 20px;
+	color: white;
 }
 </style>
