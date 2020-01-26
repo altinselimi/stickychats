@@ -17,7 +17,7 @@
 		top:0;
 		left: 0;
 		z-index: 999999;
-		backdrop-filter: blur(5px) brightness(.2);
+		backdrop-filter: blur(25px) brightness(.1);
 		svg {
 			stroke: white;
 			transform: rotate(0deg);

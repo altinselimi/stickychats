@@ -62,7 +62,11 @@ button {
 }
 
 :root {
-	--main-bg-color: coral;
+	--theme: #008cff;
 	--red: #FE4A49;
+	--yellow: #ffe9a3;
+    --light: #fbfbfb;
+    --grey: #e1e0df;
+    --dark-shade: #332f21;
 }
 </style>

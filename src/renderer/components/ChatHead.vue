@@ -1,32 +1,51 @@
 <template>
-	<div :style="chatHeadStyle"
-	     class="chat-head__wrapper"
-	     :class="{
-	     	'is-unread': unread,
-	     	'has-blur': !allVisible && index > 0,
-	     	'multiple': filteredImages.length > 1
-	     }"
-	     @mousedown="handleMouseDown"
-	     @mousemove="handleMouseMove"
-	     @mouseup="handleMouseUp"
-	     @dblclick="hideChatHeead">
-		<div class="chat-head__item"
-		     :class="{'multiple': filteredImages.length > 1, 'custom-size': customSize}">
-			<div v-for="image in filteredImages"
-			     v-if="hasImage"
-			     :src="image"
-			     :style="`background-image: url('${image}');`">
-			</div>
-			<div v-if="filteredImages.length > 1"
-			     :style="`background-image: url('${filteredImages[0]}');`"
-			     class="blurryGroupBackground">
-			</div>
+	<div
+		:style="chatHeadStyle"
+		class="chat-head__wrapper"
+		:class="{
+			'is-unread': unread,
+			'has-blur': !allVisible && index > 0,
+			multiple: filteredImages.length > 1,
+		}"
+		@mousedown="handleMouseDown"
+		@mousemove="handleMouseMove"
+		@mouseup="handleMouseUp"
+		@click.prevent.stop
+		@dblclick="hideChatHead"
+	>
+		<div
+			class="chat-head__item"
+			:class="{
+				multiple: filteredImages.length > 1,
+				'custom-size': customSize,
+			}"
+		>
+			<div
+				v-for="image in filteredImages"
+				v-if="hasImage"
+				:src="image"
+				:style="`background-image: url('${image}');`"
+			></div>
+			<div
+				v-if="filteredImages.length > 1"
+				:style="`background-image: url('${filteredImages[0]}');`"
+				class="blurryGroupBackground"
+			></div>
 		</div>
 	</div>
 </template>
 <script>
 export default {
-	props: ['images', 'name', 'unread', 'order', 'index', 'allVisible', 'customSize', 'hidden'],
+	props: [
+		'images',
+		'name',
+		'unread',
+		'order',
+		'index',
+		'allVisible',
+		'customSize',
+		'hidden',
+	],
 	computed: {
 		hasImage() {
 			return !!this.images && this.images.length > 0;
@@ -39,19 +58,20 @@ export default {
 
 			let styles = {
 				'z-index': order,
-				'transform': transformStyle,
-				'opacity': !!allVisible || (index < 2) ? '1' : '0'
+				transform: transformStyle,
+				opacity: !!allVisible || index < 2 ? '1' : '0',
 			};
 
 			return Object.keys(styles).reduce((acc, currKey) => {
-				return acc += `${currKey}: ${styles[currKey]};`;
+				return (acc += `${currKey}: ${styles[currKey]};`);
 			}, ``);
 		},
 		transformStyle() {
 			if (this.allVisible) {
-				return `translateX(-${(this.index) * 68}px)`;
+				return `translateX(-${this.index * 68}px)`;
 			} else if (this.index < 2) {
-				return `translateX(${this.index * 10}px) scale(${1 - (0.1 * this.index)});`;
+				return `translateX(${this.index * 10}px) scale(${1 -
+					0.1 * this.index});`;
 			} else {
 				return `translateX(0)`;
 			}
@@ -59,27 +79,39 @@ export default {
 	},
 	data: () => ({
 		isDragging: false,
+		delta: 6,
+		startX: null,
+		startY: null,
 	}),
 	methods: {
-		handleMouseDown() {
+		handleMouseDown(event) {
 			this.isDragging = false;
+			this.startX = event.pageX;
+			this.startY = event.pageY;
 		},
 		handleMouseMove() {
 			this.isDragging = true;
 		},
-		handleMouseUp() {
-			if(this.isDragging === false) {
-				setTimeout(() => {
-					!this.hidden && this.$emit('select');
-				}, 200);
+		handleMouseUp(event) {
+			const { delta, startX, startY, isDragging, hidden } = this;
+			const diffX = Math.abs(event.pageX - startX);
+			const diffY = Math.abs(event.pageY - startY);
+
+			if (
+				isDragging === false &&
+				diffX < delta &&
+				diffY < delta &&
+				!hidden
+			) {
+				this.$emit('select');
 			}
 			this.isDragging = false;
 		},
-		hideChatHeead() {
+		hideChatHead() {
 			this.$emit('hide');
 		},
 	},
-}
+};
 </script>
 <style lang="scss">
 .chat-head {
@@ -87,8 +119,7 @@ export default {
 		-webkit-app-region: drag;
 		pointer-events: all;
 		user-select: none;
-		transition: transform ease-out .3s,
-			opacity ease-in .4s;
+		transition: transform ease-out 0.3s, opacity ease-in 0.4s;
 		box-shadow: 1px 0px 4px 0px black;
 		border-radius: 100%;
 		border: solid 1px white;
@@ -107,13 +138,12 @@ export default {
 			position: absolute;
 			top: 0;
 			left: 0;
-			backdrop-filter: blur(2px) brightness(.8);
+			backdrop-filter: blur(2px) brightness(0.8);
 			border-radius: 100%;
 			z-index: 5;
 		}
 
 		&.is-unread {
-
 			// animation: pulseHead .3s linear infinite;
 			&::after {
 				content: '';
@@ -135,11 +165,11 @@ export default {
 		height: 100%;
 		border-radius: 100%;
 		transform: scale(1);
-		transition: transform .3s;
+		transition: transform 0.3s;
 		position: relative;
 		overflow: hidden;
 
-		>div {
+		> div {
 			width: 100%;
 			height: 100%;
 			border-radius: 100%;
@@ -149,7 +179,7 @@ export default {
 		}
 
 		&.custom-size {
-			>div {
+			> div {
 				background-size: 20px;
 				background-repeat: no-repeat;
 				background-color: whitesmoke;
@@ -159,19 +189,19 @@ export default {
 		&.multiple {
 			border: solid 1px white;
 
-			>div {
+			> div {
 				width: 40px;
 				height: 40px;
 				position: absolute;
 			}
 
-			>div:first-child {
+			> div:first-child {
 				z-index: 5;
 				top: 0;
 				left: 0;
 			}
 
-			>div:nth-child(2) {
+			> div:nth-child(2) {
 				z-index: 4;
 				bottom: 0;
 				right: 0;
