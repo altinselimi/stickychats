@@ -2,27 +2,34 @@
 <html>
 
 <head>
-	<meta charset="utf-8">
+	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible"
-	      content="IE=edge">
-	<title>StickyChats - Keep your friends close, and your chats closer</title>
+	      content="IE=edge" />
+	<title>
+		StickyChats - Keep your friends close, and your chats closer
+	</title>
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async
 	        src="https://www.googletagmanager.com/gtag/js?id=UA-154349844-1"></script>
 	<script>
-			window.dataLayer = window.dataLayer || [];
-	  function gtag(){dataLayer.push(arguments);}
-	  gtag('js', new Date());
+		window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag('js', new Date());
 
-	  gtag('config', 'UA-154349844-1');
-	</script>
+			gtag('config', 'UA-154349844-1');
+		</script>
+	<script src="./vue.js"></script>
+	<link rel="stylesheet"
+	      href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
 	<link href="https://fonts.googleapis.com/css?family=Varela+Round&display=swap"
-	      rel="stylesheet">
+	      rel="stylesheet" />
 	<style type="text/css"
 	       media="screen">
 	:root {
-		--blue: #007AFF;
-		--strong-blue: #1C01FF;
+		--blue: #007aff;
+		--strong-blue: #1c01ff;
 	}
 
 	html,
@@ -50,10 +57,13 @@
 		height: 100vh;
 		justify-content: center;
 		flex-direction: column;
-		background-image: linear-gradient(0deg, rgba(252, 221, 221, 1) 43.8%, rgb(255, 236, 236) 92%)
+		background-image: linear-gradient(0deg,
+			rgba(252, 221, 221, 1) 43.8%,
+			rgb(255, 236, 236) 92%);
 	}
 
-	a {
+	.download-btn {
+		all: unset;
 		text-decoration: none;
 		color: black;
 		display: flex;
@@ -66,7 +76,9 @@
 		background-position: top right;
 		background-size: cover;
 		color: white;
+		flex: 1;
 		text-align: center;
+		cursor: pointer;
 	}
 
 	.macbook-wrapper {
@@ -75,19 +87,18 @@
 		justify-content: center;
 		align-items: center;
 		width: calc(16 * 4vw);
-		height: calc(16* 3vw);
+		height: calc(16 * 3vw);
 		max-height: 1440px;
 		max-width: 1920px;
 		flex-shrink: 0;
 		-webkit-font-smoothing: subpixel-antialiased;
 		backface-visibility: hidden;
-
 	}
 
 	@media only screen and (max-width: 1250px) {
 		.macbook-wrapper {
 			width: calc(20 * 4vw);
-			height: calc(20* 3vw);
+			height: calc(20 * 3vw);
 		}
 	}
 
@@ -126,8 +137,10 @@
 
 	.hi-friend {
 		max-width: 450px;
+		display: flex;
+		flex-direction: column;
 		width: 100%;
-		background-color: rgba(0, 0, 0, .5);
+		background-color: rgba(0, 0, 0, 0.5);
 		backdrop-filter: blur(10px);
 		border-radius: 8px;
 		overflow: hidden;
@@ -137,27 +150,72 @@
 	</style>
 </head>
 
-<body>
+<body >
 	<div class="macbook-wrapper">
 		<img class="mbp-screenshot"
 		     src="./mbp.png"
 		     alt="macbook-screenshot" />
 	</div>
-	<div class="hi-friend-wrapper">
+	<div class="hi-friend-wrapper" id="app">
 		<div class="hi-friend">
 			<h1>Hi there friend,</h1>
-			<p>I am StickyChats. A nice little Facebook Messenger client, probably the best (a bit biased though). Download me to join the club and chat with your friends effortlessly. The feed can wait for later.</p>
-			<p>Even though the app is very much usable, consider this an early alpha version.</p>
-			<a href="https://drive.google.com/open?id=1HD3yHme024xAfglQVcUDxtMaZIoOy5GF"
-			   target="_blank"
+			<p>
+				I am StickyChats. A nice little Facebook Messenger client,
+				probably the best (a bit biased though). Download me to join
+				the club and chat with your friends effortlessly. The feed
+				can wait for later.
+			</p>
+			<p>
+				Even though the app is very much usable, consider this an
+				early alpha version.
+			</p>
+			<button @click="goToLink()"
 			   class="download-btn">
-				<img src="./macos.svg"
-				     width="25px"
-				     height="25px" />
+				<i color="black"
+				   class="fab"
+				   :class="{'fa-windows': system === 'windows', 'fa-apple': system === 'mac'}"></i>
 				<span style="margin-left: 10px; width: 100%;">Download</span>
-			</a>
+			</button>
 		</div>
 	</div>
 </body>
+<script>
+Vue.config.devtools = true
+var app = new Vue({
+	el: '#app',
+	created() {
+		console.log('Created');
+		fetch('https://api.github.com/repos/altinselimi/stickychats/releases/latest')
+			.then(async res => {
+				const jsonResult = await res.json();
+				const { assets } = jsonResult;
+				const macAsset = assets.find(a => a.name.includes('.dmg'));
+				const windowsAsset = assets.find(a => a.name.includes('.exe'));
+				if (this.system === 'mac') this.downloadLink = macAsset.browser_download_url;
+				else this.downloadLink = macAsset.browser_download_url;
+			})
+	},
+	computed: {
+		system() {
+			if (navigator.platform.indexOf('Mac') > -1) return 'mac';
+			return 'windows';
+		},
+		link() {
+			if (this.system === 'mac') {
+				return 'https://github.com/altinselimi/monimo/releases/download/v0.2.4/Monimo-0.2.4.dmg';
+			}
+			return 'https://github.com/altinselimi/monimo/releases/download/v0.2.4/monimo-setup-0.2.4.exe';
+		},
+	},
+	data: () => ({
+		downloadLink: null
+	}),
+	methods: {
+		goToLink() {
+			window.open(this.downloadLink, '_blank');
+		}
+	}
+});
+</script>
 
 </html>
