@@ -79,7 +79,7 @@ export default {
 	},
 	data: () => ({
 		isDragging: false,
-		delta: 6,
+		delta: 10,
 		startX: null,
 		startY: null,
 	}),

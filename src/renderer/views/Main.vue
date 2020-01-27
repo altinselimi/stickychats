@@ -343,8 +343,6 @@ export default {
 	width: 100%;
 
 	&.logged-out {
-		-webkit-app-region: drag;
-
 		.webview-wrapper {
 			margin-right: 0px;
 			margin-top: 0px;
