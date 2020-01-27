@@ -192,7 +192,7 @@ var app = new Vue({
 				const macAsset = assets.find(a => a.name.includes('.dmg'));
 				const windowsAsset = assets.find(a => a.name.includes('.exe'));
 				if (this.system === 'mac') this.downloadLink = macAsset.browser_download_url;
-				else this.downloadLink = macAsset.browser_download_url;
+				else this.downloadLink = windowsAsset.browser_download_url;
 			})
 	},
 	computed: {
