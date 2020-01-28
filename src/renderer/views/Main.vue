@@ -18,7 +18,7 @@
 			:message="updateAvailableMessage"
 		/>
 		<div class="app-version" v-if="showAppVersion">
-			<span>v{{appVersion}}</span>
+			<span>v{{ appVersion }}</span>
 		</div>
 		<div
 			v-if="recentHeads"
@@ -61,28 +61,33 @@
 	</div>
 </template>
 <script>
-import { remote, ipcRenderer } from "electron";
+import { remote, ipcRenderer } from 'electron';
 import { createNamespacedHelpers } from 'vuex';
-var Mousetrap = require("mousetrap");
-import faker from "faker";
-import ChatHead from "@/components/ChatHead.vue";
-import LoadingView from "@/components/LoadingView";
-import Suggestion from "@/components/Suggestion.vue";
-const consoleSplitter = "+_+";
+var Mousetrap = require('mousetrap');
+import faker from 'faker';
+import ChatHead from '@/components/ChatHead.vue';
+import LoadingView from '@/components/LoadingView';
+import Suggestion from '@/components/Suggestion.vue';
+const consoleSplitter = '+_+';
 const base64AddIcon = require('../assets/new-message-base64.js').default;
 
-const { mapState, mapActions, mapGetters, mapMutations } = createNamespacedHelpers('UiState');
+const {
+	mapState,
+	mapActions,
+	mapGetters,
+	mapMutations,
+} = createNamespacedHelpers('UiState');
 
 export default {
 	components: {
 		ChatHead,
 		LoadingView,
-		Suggestion
+		Suggestion,
 	},
 	computed: {
 		...mapGetters(['getWebviewID']),
 		isDev() {
-			return process.env.NODE_ENV === "development";
+			return process.env.NODE_ENV === 'development';
 		},
 		recentHeads() {
 			if (!this.heads) return null;
@@ -90,38 +95,40 @@ export default {
 			return this.heads.slice(0, 4).sort(a => {
 				return a.isActive === true ? -1 : 0;
 			});
-		}
+		},
 	},
 	created() {
 		console.log('Created hook');
 		this.updateWebviewId(new Date().valueOf());
 		this.handleWindowTransparentStates();
-		Mousetrap.bind(["command+l", "ctrl+l"], () => {
+		Mousetrap.bind(['command+l', 'ctrl+l'], () => {
 			this.logUserOut();
 			// return false to prevent default behavior and stop event from bubbling
 			return false;
 		});
-		Mousetrap.bind(["command+d", "ctrl+d"], () => {
+		Mousetrap.bind(['command+d', 'ctrl+d'], () => {
 			this.showAppVersion = !this.showAppVersion;
 			// return false to prevent default behavior and stop event from bubbling
 			return false;
 		});
 		ipcRenderer.on('update_downloaded', () => {
-		  ipcRenderer.removeAllListeners('update_downloaded');
-		  this.updateAvailable = true;
+			console.log('Update has been downloaded');
+			this.appVersion += '[old]';
+			ipcRenderer.removeAllListeners('update_downloaded');
+			this.updateAvailable = true;
 		});
 		this.appVersion = remote.app.getVersion();
 	},
 	mounted() {
-		const webview = document.querySelector("#messengerWebView");
-		webview.addEventListener("dom-ready", () => {
+		const webview = document.querySelector('#messengerWebView');
+		webview.addEventListener('dom-ready', () => {
 			// this.isDev && webview.openDevTools();
-			webview.addEventListener("console-message", e => {
-				if (e.message.includes("userStatus")) {
+			webview.addEventListener('console-message', e => {
+				if (e.message.includes('userStatus')) {
 					this.updateUserStatus(e.message);
-				} else if (e.message.includes("updateChats")) {
+				} else if (e.message.includes('updateChats')) {
 					this.updateChats(e.message.split(consoleSplitter)[1]);
-				} else if (e.message.includes("loggedUserOut")) {
+				} else if (e.message.includes('loggedUserOut')) {
 					this.loading = false;
 					this.heads = null;
 					this.loggedIn = false;
@@ -132,13 +139,13 @@ export default {
 				}
 			});
 		});
-		webview.addEventListener("did-start-loading", () => {
-			this.webviewStatus = "loading...";
+		webview.addEventListener('did-start-loading', () => {
+			this.webviewStatus = 'loading...';
 			if (this.loggedIn) return;
 			this.isLoading = true;
 		});
-		webview.addEventListener("did-stop-loading", () => {
-			this.webviewStatus = "done";
+		webview.addEventListener('did-stop-loading', () => {
+			this.webviewStatus = 'done';
 			this.isLoading = false;
 			if (this.loggedIn) return;
 			if (!webview) return;
@@ -182,7 +189,7 @@ export default {
 			let [width, height] = win.getSize();
 			win.setSize(width, 901);
 
-			const webview = document.querySelector("#messengerWebView");
+			const webview = document.querySelector('#messengerWebView');
 			webview.executeJavaScript(`
 				logUserOut();
 			`);
@@ -190,12 +197,12 @@ export default {
 		handleWindowTransparentStates() {
 			if (this.blurListennerAttached) return;
 			let win = remote.getCurrentWindow();
-			win.on("blur", () => {
+			win.on('blur', () => {
 				if (!this.loggedIn) return;
 				this.hideWebView = true;
 				this.headsOpen = false;
 			});
-			win.on("focus", () => {
+			win.on('focus', () => {
 				if (!this.loggedIn) return;
 				setTimeout(() => {
 					this.hideWebView = false;
@@ -204,7 +211,7 @@ export default {
 			this.blurListennerAttached = true;
 		},
 		newMessage() {
-			const webview = document.querySelector("#messengerWebView");
+			const webview = document.querySelector('#messengerWebView');
 			webview.executeJavaScript(`
 				newMessage();
 			`);
@@ -217,7 +224,7 @@ export default {
 				return;
 			}
 
-			const webview = document.querySelector("#messengerWebView");
+			const webview = document.querySelector('#messengerWebView');
 			webview.executeJavaScript(`
 				selectChatHead('${id}');
 			`);
@@ -225,16 +232,16 @@ export default {
 			this.headsOpen = false;
 		},
 		hideChat(id, index) {
-			if(!this.isDev) return;
+			if (!this.isDev) return;
 			this.closedHeads.push(id);
 		},
 		updateUserStatus(message) {
 			let newValue = false;
-			if (message === "userStatus__loggedIn") {
+			if (message === 'userStatus__loggedIn') {
 				newValue = true;
 				// update only if these were different to begin with
 				if (this.loggedIn !== newValue) this.updateLayout();
-			} else if (message === "userStatus__loggedOut") {
+			} else if (message === 'userStatus__loggedOut') {
 				newValue = false;
 			}
 			if (newValue !== this.loggedIn) {
@@ -259,7 +266,7 @@ export default {
 			this.heads = JSON.parse(stringifiedChats);
 		},
 		updateLayout() {
-			const webview = document.querySelector("#messengerWebView");
+			const webview = document.querySelector('#messengerWebView');
 
 			webview.executeJavaScript(`
 	    		// Select the node that will be observed for mutations
@@ -341,8 +348,8 @@ export default {
 				scrollToBottom();
 				scrapChatheads();
 			`);
-		}
-	}
+		},
+	},
 };
 </script>
 <style lang="scss">
@@ -357,7 +364,7 @@ export default {
 		.webview-wrapper {
 			margin-right: 0px;
 			margin-top: 0px;
-			>div {
+			> div {
 				margin: 0px;
 				border-top-right-radius: 0px;
 				border-top-left-radius: 0px;
@@ -417,7 +424,7 @@ webview {
 	pointer-events: all;
 
 	&:before {
-		content: "";
+		content: '';
 		border: solid lighten(#d9d9d9, 10);
 		border-width: 0px 15px 15px 0px;
 		display: inline-block;
