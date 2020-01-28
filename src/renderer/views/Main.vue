@@ -17,7 +17,7 @@
 			@click.native="updateApp()"
 			:message="updateAvailableMessage"
 		/>
-		<div class="app-version">
+		<div class="app-version" v-if="showAppVersion">
 			<span>v{{appVersion}}</span>
 		</div>
 		<div
