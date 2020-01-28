@@ -8,7 +8,6 @@
 			multiple: filteredImages.length > 1,
 		}"
 		@mousedown="handleMouseDown"
-		@mousemove="handleMouseMove"
 		@mouseup="handleMouseUp"
 		@dblclick="hideChatHead"
 	>
@@ -79,18 +78,14 @@ export default {
 	},
 	data: () => ({
 		isDragging: false,
-		delta: 10,
+		delta: 50,
 		startX: null,
 		startY: null,
 	}),
 	methods: {
 		handleMouseDown(event) {
-			this.isDragging = false;
 			this.startX = event.pageX;
 			this.startY = event.pageY;
-		},
-		handleMouseMove() {
-			this.isDragging = true;
 		},
 		handleMouseUp(event) {
 			const { delta, startX, startY, isDragging, hidden } = this;
@@ -98,14 +93,12 @@ export default {
 			const diffY = Math.abs(event.pageY - startY);
 
 			if (
-				isDragging === false &&
 				diffX < delta &&
 				diffY < delta &&
 				!hidden
 			) {
 				this.$emit('select');
 			}
-			this.isDragging = false;
 		},
 		hideChatHead() {
 			this.$emit('hide');

@@ -117,7 +117,7 @@ export default {
 			ipcRenderer.removeAllListeners('update_downloaded');
 			this.updateAvailable = true;
 		});
-		ipcRenderer.on('checking_update', (value) => {
+		ipcRenderer.on('checking_update', value => {
 			console.log('Checking for update: ', value);
 			ipcRenderer.removeAllListeners('checking_update');
 		});
@@ -271,6 +271,16 @@ export default {
 			}
 		},
 		updateChats(stringifiedChats) {
+			if (this.heads === null) {
+				// workaround for initial chat window scroll
+				// position set to middle (for some reeason)
+				const webview = document.querySelector('#messengerWebView');
+				setTimeout(() => {
+					webview.executeJavaScript(`
+						scrollToBottom();
+					`);
+				}, 1000);
+			}
 			this.heads = JSON.parse(stringifiedChats);
 		},
 		updateLayout() {
