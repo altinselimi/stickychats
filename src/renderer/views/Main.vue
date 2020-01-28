@@ -117,6 +117,14 @@ export default {
 			ipcRenderer.removeAllListeners('update_downloaded');
 			this.updateAvailable = true;
 		});
+		ipcRenderer.on('checking_update', (value) => {
+			console.log('Checking for update: ', value);
+			ipcRenderer.removeAllListeners('checking_update');
+		});
+		ipcRenderer.on('update_available', () => {
+			console.log('Update is available');
+			ipcRenderer.removeAllListeners('update_available');
+		});
 		this.appVersion = remote.app.getVersion();
 	},
 	mounted() {

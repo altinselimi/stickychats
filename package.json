@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "electron-log": "^4.0.4",
     "electron-updater": "^4.2.0",
     "faker": "^4.1.0",
     "json-server": "^0.15.1",
