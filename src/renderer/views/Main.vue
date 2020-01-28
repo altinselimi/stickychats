@@ -393,6 +393,7 @@ webview {
 	width: calc(100% + 85px);
 	height: 100%;
 	margin-left: -85px;
+	overflow: hidden;
 }
 
 .webview-wrapper {
