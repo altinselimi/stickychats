@@ -408,7 +408,6 @@ webview {
 }
 
 .webview-wrapper {
-	margin-top: 10px;
 	flex: 1;
 	display: flex;
 	margin-right: 200px;

@@ -28,7 +28,7 @@ function createWindow() {
       nodeIntegration: true,
       webSecurity: false,
       webviewTag: true,
-      devTools: isProd ? false : true,
+      devTools: true,
     },
     transparent: true,
     frame: false,
