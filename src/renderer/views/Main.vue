@@ -102,7 +102,7 @@ export default {
 			return false;
 		});
 		Mousetrap.bind(["command+d", "ctrl+d"], () => {
-			this.showAppVersion = true;
+			this.showAppVersion = !this.showAppVersion;
 			// return false to prevent default behavior and stop event from bubbling
 			return false;
 		});
