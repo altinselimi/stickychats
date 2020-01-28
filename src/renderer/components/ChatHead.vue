@@ -10,7 +10,6 @@
 		@mousedown="handleMouseDown"
 		@mousemove="handleMouseMove"
 		@mouseup="handleMouseUp"
-		@click.prevent.stop
 		@dblclick="hideChatHead"
 	>
 		<div
@@ -67,8 +66,9 @@ export default {
 			}, ``);
 		},
 		transformStyle() {
+			const chatHeadWidth = 54;
 			if (this.allVisible) {
-				return `translateX(-${this.index * 68}px)`;
+				return `translateX(-${this.index * (chatHeadWidth + 4)}px)`;
 			} else if (this.index < 2) {
 				return `translateX(${this.index * 10}px) scale(${1 -
 					0.1 * this.index});`;
@@ -124,8 +124,8 @@ export default {
 		border-radius: 100%;
 		border: solid 1px white;
 		background-color: white;
-		width: 64px;
-		height: 64px;
+		width: 54px;
+		height: 54px;
 
 		&:hover {
 			transform: scale(1.1);

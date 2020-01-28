@@ -17,6 +17,9 @@
 			@click.native="updateApp()"
 			:message="updateAvailableMessage"
 		/>
+		<div class="app-version">
+			<span>v{{appVersion}}</span>
+		</div>
 		<div
 			v-if="recentHeads"
 			class="chatheads"
@@ -98,15 +101,21 @@ export default {
 			// return false to prevent default behavior and stop event from bubbling
 			return false;
 		});
+		Mousetrap.bind(["command+d", "ctrl+d"], () => {
+			this.showAppVersion = true;
+			// return false to prevent default behavior and stop event from bubbling
+			return false;
+		});
 		ipcRenderer.on('update_downloaded', () => {
 		  ipcRenderer.removeAllListeners('update_downloaded');
 		  this.updateAvailable = true;
 		});
+		this.appVersion = remote.app.getVersion();
 	},
 	mounted() {
 		const webview = document.querySelector("#messengerWebView");
 		webview.addEventListener("dom-ready", () => {
-			this.isDev && webview.openDevTools();
+			// this.isDev && webview.openDevTools();
 			webview.addEventListener("console-message", e => {
 				if (e.message.includes("userStatus")) {
 					this.updateUserStatus(e.message);
@@ -158,6 +167,8 @@ export default {
 		loggedOutMessage: `Please complete the login procedure in the Messenger.com window below.`,
 		updateAvailableMessage: `Click here to update StickyChats`,
 		updateAvailable: false,
+		appVersion: null,
+		showAppVersion: false,
 	}),
 	methods: {
 		...mapActions(['updateWebviewId']),
@@ -341,7 +352,7 @@ export default {
 	flex-direction: column;
 	height: 100%;
 	width: 100%;
-
+	position: relative;
 	&.logged-out {
 		.webview-wrapper {
 			margin-right: 0px;
@@ -428,6 +439,24 @@ webview {
 		background-color: transparent;
 		border-radius: 8px;
 		overflow: hidden;
+	}
+}
+
+.app-version {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	font-family: serif;
+	font-size: 8px;
+	> span {
+		background-color: var(--dark-shade);
+		border-radius: 10px;
+		margin-left: 80px;
+		color: var(--yellow);
+		padding: 2px;
 	}
 }
 
