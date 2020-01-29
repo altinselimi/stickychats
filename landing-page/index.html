@@ -35,17 +35,15 @@
 		     alt="macbook-screenshot" />
 	</div>
 	<div class="hi-friend-wrapper" id="app">
-		<div class="hi-friend">
+		<article class="hi-friend">
 			<h1>Hi there friend,</h1>
 			<p>
 				I am StickyChats. A nice little Facebook Messenger client,
-				probably the best (a bit biased though). Download me to join
-				the club and chat with your friends effortlessly. The feed
-				can wait for later.
+				that brings your beloved <i>chatheads</i> feature to the desktop. 
+				Download me for free and chat with your friends effortlessly.
 			</p>
 			<p>
-				Even though the app is very much usable, consider this an
-				early alpha version.
+				Even though the app is very much usable, this is a beta version, and as such, bugs are to be expected.
 			</p>
 			<p>Made by <a href="https://twitter.com/altinselimi">@altinselimi</a>. Check out the source code <a href="https://github.com/altinselimi/stickychats">here</a>.</p>
 			<button @click="goToLink()"
@@ -55,7 +53,7 @@
 				   :class="{'fa-windows': system === 'windows', 'fa-apple': system === 'mac'}"></i>
 				<span style="margin-left: 10px; width: 100%;">Download</span>
 			</button>
-		</div>
+		</article>
 	</div>
 </body>
 <script>
