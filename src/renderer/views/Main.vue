@@ -62,7 +62,6 @@
 </template>
 <script>
 import { remote, ipcRenderer } from 'electron';
-import { createNamespacedHelpers } from 'vuex';
 var Mousetrap = require('mousetrap');
 import faker from 'faker';
 import ChatHead from '@/components/ChatHead.vue';
@@ -71,13 +70,6 @@ import Suggestion from '@/components/Suggestion.vue';
 const consoleSplitter = '+_+';
 const base64AddIcon = require('../assets/new-message-base64.js').default;
 
-const {
-	mapState,
-	mapActions,
-	mapGetters,
-	mapMutations,
-} = createNamespacedHelpers('UiState');
-
 export default {
 	components: {
 		ChatHead,
@@ -85,7 +77,6 @@ export default {
 		Suggestion,
 	},
 	computed: {
-		...mapGetters(['getWebviewID']),
 		isDev() {
 			return process.env.NODE_ENV === 'development';
 		},
@@ -98,34 +89,38 @@ export default {
 		},
 	},
 	created() {
-		console.log('Created hook');
-		this.updateWebviewId(new Date().valueOf());
 		this.handleWindowTransparentStates();
+
+		this.appVersion = remote.app.getVersion();
+
 		Mousetrap.bind(['command+l', 'ctrl+l'], () => {
 			this.logUserOut();
 			// return false to prevent default behavior and stop event from bubbling
 			return false;
 		});
+
 		Mousetrap.bind(['command+d', 'ctrl+d'], () => {
 			this.showAppVersion = !this.showAppVersion;
 			// return false to prevent default behavior and stop event from bubbling
 			return false;
 		});
+
 		ipcRenderer.on('update_downloaded', () => {
 			console.log('Update has been downloaded');
 			this.appVersion += '[old]';
 			ipcRenderer.removeAllListeners('update_downloaded');
 			this.updateAvailable = true;
 		});
+
 		ipcRenderer.on('checking_update', value => {
 			console.log('Checking for update: ', value);
 			ipcRenderer.removeAllListeners('checking_update');
 		});
+
 		ipcRenderer.on('update_available', () => {
 			console.log('Update is available');
 			ipcRenderer.removeAllListeners('update_available');
 		});
-		this.appVersion = remote.app.getVersion();
 	},
 	mounted() {
 		const webview = document.querySelector('#messengerWebView');
@@ -186,12 +181,10 @@ export default {
 		showAppVersion: false,
 	}),
 	methods: {
-		...mapActions(['updateWebviewId']),
 		updateApp() {
 			ipcRenderer.send('restart_app');
 		},
 		logUserOut() {
-			console.log('Logging out function called');
 			// need to have the settings button visible
 			let win = remote.getCurrentWindow();
 			let [width, height] = win.getSize();

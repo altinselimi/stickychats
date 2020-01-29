@@ -1,6 +1,6 @@
 {
   "name": "stickychats",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "author": "Altin Selimi <selimialtin@gmail.com>",
   "description": "StickyChats is a facebook messenger client which brings you the chat heads experience to your desktop computer.",
   "license": null,
@@ -51,7 +51,7 @@
     "css-loader": "^0.28.11",
     "del": "^3.0.0",
     "devtron": "^1.4.0",
-    "electron": "^7.1.3",
+    "electron": "^7.1.9",
     "electron-builder": "^22.3.2",
     "electron-debug": "^3.0.1",
     "electron-devtools-installer": "^2.2.4",

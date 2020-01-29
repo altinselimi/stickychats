@@ -23,6 +23,7 @@ export default {
 		let analyticsScript = document.createElement('script');
 		analyticsScript.type = 'text/javascript';
 		analyticsScript.src = 'https://www.googletagmanager.com/gtag/js?id=UA-154349844-2';
+		document.body.appendChild(analyticsScript);
 
 		analyticsScript.onload = function() {
 			let analyticsInit = document.createElement('script');
@@ -35,8 +36,6 @@ export default {
 			`;
 			document.body.appendChild(analyticsInit);
 		}
-
-		document.body.appendChild(analyticsScript);
 	},
 	name: 'chatheads'
 }

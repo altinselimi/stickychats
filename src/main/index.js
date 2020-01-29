@@ -1,5 +1,6 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
+const log = require('electron-log');
 
 const isProd = process.env.NODE_ENV !== 'development';
 
@@ -32,7 +33,7 @@ function createWindow() {
             nodeIntegration: true,
             webSecurity: false,
             webviewTag: true,
-            devTools: true,
+            devTools: isProd ? false : true,
         },
         transparent: true,
         frame: false,
@@ -59,7 +60,13 @@ function createWindow() {
     });
 }
 
-app.on('ready', createWindow);
+app.on('ready', () => {
+    createWindow();
+    log.transports.file.level = 'debug';
+    autoUpdater.logger = log;
+    autoUpdater.checkForUpdatesAndNotify();
+
+});
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -81,6 +88,10 @@ app.on('activate', () => {
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-electron-builder.html#auto-updating
  */
 
+autoUpdater.on('download-progress', (event) => {
+    mainWindow.webContents.send('download_progress', event);
+})
+
 autoUpdater.on('update-downloaded', () => {
     mainWindow.webContents.send('update_downloaded');
 });
@@ -91,10 +102,6 @@ autoUpdater.on('checking-for-update', () => {
 
 autoUpdater.on('update-available', () => {
     mainWindow.webContents.send('update_available');
-});
-
-app.on('ready', () => {
-    if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates();
 });
 
 ipcMain.on('restart_app', () => {
