@@ -5,6 +5,8 @@
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible"
 	      content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 	<title>
 		StickyChats - Keep your friends close, and your chats closer
 	</title>
@@ -13,86 +15,156 @@
 	        src="https://www.googletagmanager.com/gtag/js?id=UA-154349844-1"></script>
 	<script>
 		window.dataLayer = window.dataLayer || [];
-			function gtag() {
-				dataLayer.push(arguments);
-			}
-			gtag('js', new Date());
 
-			gtag('config', 'UA-154349844-1');
-		</script>
-	<script src="./vue.js"></script>
+	function gtag() {
+		dataLayer.push(arguments);
+	}
+	gtag('js', new Date());
+
+	gtag('config', 'UA-154349844-1');
+	</script>
 	<link rel="stylesheet"
-	      href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+	      href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" />
 	<link href="https://fonts.googleapis.com/css?family=Varela+Round&display=swap"
 	      rel="stylesheet" />
-	<link rel="stylesheet" href="./style.css">
+	<link rel="stylesheet"
+	      href="./style.css" />
 </head>
 
-<body >
-	<div class="macbook-wrapper">
-		<img class="mbp-screenshot"
-		     src="./mbp.png"
-		     alt="macbook-screenshot" />
-	</div>
-	<div class="hi-friend-wrapper" id="app">
-		<article class="hi-friend">
-			<h1>Hi there friend,</h1>
-			<p>
-				I am StickyChats. A nice little Facebook Messenger client,
-				that brings your beloved <i>chatheads</i> feature to the desktop. 
-				Download me for free and chat with your friends effortlessly.
-			</p>
-			<p>
-				Even though the app is very much usable, this is a beta version, and as such, bugs are to be expected.
-			</p>
-			<p>Made by <a href="https://twitter.com/altinselimi">@altinselimi</a>. Check out the source code <a href="https://github.com/altinselimi/stickychats">here</a>.</p>
-			<button @click="goToLink()"
-			   class="download-btn">
-				<i color="black"
-				   class="fab"
-				   :class="{'fa-windows': system === 'windows', 'fa-apple': system === 'mac'}"></i>
-				<span style="margin-left: 10px; width: 100%;">Download</span>
-			</button>
-		</article>
+<body>
+	<div class="wireframe"
+	     id="app">
+		<div class="macos macos__menu-bar">
+			<div class="items items__left">
+				<i class="fab fa-apple"></i>
+				<span class="app-name">StickyChats</span>
+				<span class="menu-item">File</span>
+				<span class="menu-item">Edit</span>
+				<span class="menu-item">View</span>
+				<span class="menu-item">Window</span>
+				<span class="menu-item">Help</span>
+			</div>
+			<div class="items items__right">
+				<i class="fab fa-bluetooth-b"></i>
+				<i class="fa fa-wifi"></i>
+				<i class="fa fa-clock"></i>
+				<i class="fa fa-volume-down"></i>
+				<i class="fa fa-list"
+				   style="margin-right: 0px;"></i>
+			</div>
+		</div>
+		<div class="hi-friend-wrapper">
+			<article class="hi-friend">
+				<h1>Hi there friend,</h1>
+				<p>
+					I am StickyChats. A nice little Facebook Messenger
+					client, that brings your beloved
+					<i>chatheads</i> feature to the desktop. Download me for
+					free and chat with your friends effortlessly.
+				</p>
+				<p>
+					Even though the app is very much usable, this is a beta
+					version, and as such, bugs are to be expected. {{platform}}
+				</p>
+				<p>
+					Made by
+					<a href="https://twitter.com/altinselimi" target="_blank">@altinselimi</a>. Check out the source code
+					<a href="https://github.com/altinselimi/stickychats" target="_blank">here</a>.
+				</p>
+				<button @click="goToLink()"
+				        class="download-btn">
+					<i color="black"
+					   class="fab"
+					   :class="{'fa-windows': system === 'windows', 'fa-apple': system === 'mac'}"></i>
+					<span style="margin-left: 10px; width: 100%;" v-if="link">Download</span>
+					<span v-else-if="!link && !isMobile">StickyChats is not available for your platform yet.</span>
+					<span v-else>StickyChats is available for Desktop machines only.</span>
+				</button>
+			</article>
+		</div>
+		<div class="chat-head-wrapper">
+			<div class="chat-head-list">
+				<div class="chat-head-item"
+				     v-for="avatarUrl in chatheads"
+				     :style="`
+				     	background-image: url('${avatarUrl}');
+			     	`">
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
-<script>
-Vue.config.devtools = true
+<script type="module">
+import Vue from 'https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.esm.browser.js'
+
+Vue.config.devtools = true;
 var app = new Vue({
 	el: '#app',
 	created() {
-		console.log('Created');
-		fetch('https://api.github.com/repos/altinselimi/stickychats/releases/latest')
+		fetch(
+			'https://api.github.com/repos/altinselimi/stickychats/releases/latest'
+		).then(async res => {
+			const jsonResult = await res.json();
+			const { assets } = jsonResult;
+			const macAsset = assets.find(a => a.name.includes('.dmg'));
+			const windowsAsset = assets.find(a =>
+				a.name.includes('.exe')
+			);
+			if (this.system === 'mac')
+				this.downloadLink = macAsset.browser_download_url;
+			else this.downloadLink = windowsAsset.browser_download_url;
+		});
+
+		fetch(`https://tinyfac.es/api/users`)
 			.then(async res => {
 				const jsonResult = await res.json();
-				const { assets } = jsonResult;
-				const macAsset = assets.find(a => a.name.includes('.dmg'));
-				const windowsAsset = assets.find(a => a.name.includes('.exe'));
-				if (this.system === 'mac') this.downloadLink = macAsset.browser_download_url;
-				else this.downloadLink = windowsAsset.browser_download_url;
+				let avatars = jsonResult.slice(0, 2)
+					.map(face => face.avatars[0].url);
+				this.chatheads = avatars;
+				this.addDraggableScript();
 			})
 	},
 	computed: {
+		platform() {
+			return navigator.platform;
+		},
 		system() {
-			if (navigator.platform.indexOf('Mac') > -1) return 'mac';
-			return 'windows';
+			if (navigator.platform.includes('Mac')) return 'mac';
+			else if (navigator.platform.includes('Linux')) return 'linux';
+			else if (navigator.platform.includes('Win')) 'windows';
+			return null;
+		},
+		isMobile() {
+			return (/Mobile/i.test(navigator.userAgent));
 		},
 		link() {
 			if (this.system === 'mac') {
 				return 'https://github.com/altinselimi/monimo/releases/download/v0.2.4/Monimo-0.2.4.dmg';
 			}
-			return 'https://github.com/altinselimi/monimo/releases/download/v0.2.4/monimo-setup-0.2.4.exe';
+			else if (this.system === 'windows') 
+				return 'https://github.com/altinselimi/monimo/releases/download/v0.2.4/monimo-setup-0.2.4.exe';
+			return null
 		},
 	},
 	data: () => ({
-		downloadLink: null
+		downloadLink: null,
+		chatheads: null
 	}),
 	methods: {
 		goToLink() {
 			window.open(this.downloadLink, '_blank');
-		}
-	}
+		},
+		addDraggableScript() {
+			var script = document.createElement('script');
+			script.type = 'text/javascript';
+			script.src = './draggable.js';    
+
+			document.getElementsByTagName('head')[0].appendChild(script);
+			document.head.append()
+		},
+	},
 });
+
 </script>
 
 </html>
