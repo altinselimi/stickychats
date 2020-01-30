@@ -5,8 +5,8 @@
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible"
 	      content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+	<meta name="viewport"
+	      content="width=device-width, initial-scale=1.0">
 	<title>
 		StickyChats - Keep your friends close, and your chats closer
 	</title>
@@ -36,7 +36,8 @@
 	     id="app">
 		<div class="macos macos__menu-bar">
 			<div class="items items__left">
-				<i class="fab fa-apple"></i>
+				<i class="fab"
+				   :class="{'fa-windows': system === 'windows', 'fa-apple': system === 'mac'}"></i>
 				<span class="app-name">StickyChats</span>
 				<span class="menu-item">File</span>
 				<span class="menu-item">Edit</span>
@@ -68,15 +69,18 @@
 				</p>
 				<p>
 					Made by
-					<a href="https://twitter.com/altinselimi" target="_blank">@altinselimi</a>. Check out the source code
-					<a href="https://github.com/altinselimi/stickychats" target="_blank">here</a>.
+					<a href="https://twitter.com/altinselimi"
+					   target="_blank">@altinselimi</a>. Check out the source code
+					<a href="https://github.com/altinselimi/stickychats"
+					   target="_blank">here</a>.
 				</p>
 				<button @click="goToLink()"
 				        class="download-btn">
 					<i color="black"
 					   class="fab"
 					   :class="{'fa-windows': system === 'windows', 'fa-apple': system === 'mac'}"></i>
-					<span style="width: 100%;" v-if="link">Download</span>
+					<span style="width: 100%;"
+					      v-if="link">Download</span>
 					<span v-else-if="!link && !isMobile">StickyChats is not available for your platform yet.</span>
 					<span v-else>StickyChats is available for Desktop machines only.</span>
 				</button>
@@ -95,7 +99,7 @@
 	</div>
 </body>
 <script type="module">
-import Vue from 'https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.esm.browser.js'
+	import Vue from 'https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.esm.browser.js'
 
 Vue.config.devtools = true;
 var app = new Vue({
