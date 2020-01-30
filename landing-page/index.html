@@ -37,7 +37,7 @@
 		<div class="macos macos__menu-bar">
 			<div class="items items__left">
 				<i class="fab"
-				   :class="{'fa-windows': system === 'windows', 'fa-apple': system === 'mac'}"></i>
+				   :class="{'fa-windows': system === 'windows', 'fa-apple': system === 'mac' || isMobile }"></i>
 				<span class="app-name">StickyChats</span>
 				<span class="menu-item">File</span>
 				<span class="menu-item">Edit</span>
@@ -136,7 +136,7 @@ var app = new Vue({
 			if (navigator.platform.includes('Mac')) return 'mac';
 			else if (navigator.platform.includes('Linux')) return 'linux';
 			else if (navigator.platform.includes('Win')) 'windows';
-			return null;
+			return navigator.platform;
 		},
 		isMobile() {
 			return (/Mobile/i.test(navigator.userAgent));
