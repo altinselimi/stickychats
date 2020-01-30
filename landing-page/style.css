@@ -1,6 +1,7 @@
 :root {
 	--blue: #007aff;
 	--strong-blue: #1c01ff;
+	--yellow: #ffe9a3;
 }
 
 html,
@@ -184,4 +185,25 @@ a {
 	color: rgba(255, 255, 255, 0.9);
 	padding: 20px;
 	margin: 20px;
+}
+
+.thank-you {
+	font-size: 16px;
+	color: black;
+	background-color: var(--yellow);
+	width: 100%;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	padding: 8px 15px;
+	text-align: center;
+}
+
+.thank-you p {
+	margin: 0px;
+}
+
+.thank-you a {
+	color: black;
+	border-bottom-color: black;
 }

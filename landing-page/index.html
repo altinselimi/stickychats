@@ -92,6 +92,10 @@
 				</div>
 			</div>
 		</div>
+		<div class="thank-you"
+		     v-if="showThankYou">
+			<p>Thanks for downloading StickyChats! In case you want to file a bug, follow this link <a href="https://github.com/altinselimi/stickychats/issues">here</a>.</p>
+		</div>
 	</div>
 </body>
 <script type="module">
@@ -148,11 +152,13 @@ var app = new Vue({
 	},
 	data: () => ({
 		downloadLink: null,
-		chatheads: null
+		chatheads: null,
+		showThankYou: false
 	}),
 	methods: {
 		goToLink() {
 			window.open(this.downloadLink, '_blank');
+			this.showThankYou = true;
 		},
 		addDraggableScript() {
 			var script = document.createElement('script');
