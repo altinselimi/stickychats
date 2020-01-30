@@ -65,7 +65,7 @@ export default {
 			}, ``);
 		},
 		transformStyle() {
-			const chatHeadWidth = 54;
+			const chatHeadWidth = 60;
 			if (this.allVisible) {
 				return `translateX(-${this.index * (chatHeadWidth + 4)}px)`;
 			} else if (this.index < 2) {
@@ -117,8 +117,8 @@ export default {
 		border-radius: 100%;
 		border: solid 1px white;
 		background-color: white;
-		width: 54px;
-		height: 54px;
+		width: 60px;
+		height: 60px;
 
 		&:hover {
 			transform: scale(1.1);
