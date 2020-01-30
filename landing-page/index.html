@@ -76,7 +76,7 @@
 					<i color="black"
 					   class="fab"
 					   :class="{'fa-windows': system === 'windows', 'fa-apple': system === 'mac'}"></i>
-					<span style="margin-left: 10px; width: 100%;" v-if="link">Download</span>
+					<span style="width: 100%;" v-if="link">Download</span>
 					<span v-else-if="!link && !isMobile">StickyChats is not available for your platform yet.</span>
 					<span v-else>StickyChats is available for Desktop machines only.</span>
 				</button>

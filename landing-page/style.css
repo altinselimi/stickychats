@@ -138,6 +138,7 @@ a {
 
 .download-btn {
 	all: unset;
+	position: relative;
 	text-decoration: none;
 	color: black;
 	display: flex;
@@ -154,6 +155,14 @@ a {
 	text-align: center;
 	cursor: pointer;
 	margin-top: 10px;
+}
+
+.download-btn i {
+	height: 100%;
+	display: flex;
+	align-items: center;
+	position: absolute;
+	left: 15px;
 }
 
 .hi-friend-wrapper {
