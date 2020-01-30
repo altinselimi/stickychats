@@ -1,8 +1,6 @@
 var dragItem = document.querySelector('.chat-head-wrapper');
 var container = document.querySelector('#app');
 
-console.log({container, dragItem, document});
-
 var active = false;
 var currentX;
 var currentY;
