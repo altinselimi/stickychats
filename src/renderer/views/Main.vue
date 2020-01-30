@@ -125,7 +125,7 @@ export default {
 	mounted() {
 		const webview = document.querySelector('#messengerWebView');
 		webview.addEventListener('dom-ready', () => {
-			// this.isDev && webview.openDevTools();
+			this.isDev && webview.openDevTools();
 			webview.addEventListener('console-message', e => {
 				if (e.message.includes('userStatus')) {
 					this.updateUserStatus(e.message);
@@ -264,10 +264,14 @@ export default {
 			}
 		},
 		updateChats(stringifiedChats) {
-			if (this.heads === null) {
+			const isInitialScraping = this.heads === null;
+			if (isInitialScraping) {
 				// workaround for initial chat window scroll
 				// position set to middle (for some reeason)
 				const webview = document.querySelector('#messengerWebView');
+				webview.executeJavaScript(`
+					document.querySelector('html#facebook').style.overflow = 'hidden'
+				`)
 				setTimeout(() => {
 					webview.executeJavaScript(`
 						scrollToBottom();
@@ -281,7 +285,7 @@ export default {
 
 			webview.executeJavaScript(`
 	    		// Select the node that will be observed for mutations
-				var targetNode = document.querySelector('ul[aria-label="Conversation List"]');
+				var targetNode = document.querySelector('.uiScrollableAreaContent ul');
 
 				// Options for the observer (which mutations to observe)
 				var config = { attributes: true, childList: true, subtree: true };
@@ -300,7 +304,7 @@ export default {
 
 
 				function scrapChatheads() {
-					let convosList = ('ul[aria-label="Conversation List"]');
+					let convosList = ('.uiScrollableAreaContent ul');
 					let convosListChildren = (convosList + ' > li');
 
 					let chatsNode = document.querySelectorAll(convosListChildren);
@@ -311,6 +315,9 @@ export default {
 						let imgs = Array.from(imgNodes).map(imgNode => imgNode.getAttribute('src'));
 
 						let nameMessageWrapper = curr.querySelector(':scope [data-tooltip-content] + div');
+
+						if(!nameMessageWrapper) return acc;
+
 						let name = nameMessageWrapper.querySelector(':scope > div:first-child span');
 						let lastMessage = nameMessageWrapper.querySelector(':scope > div:last-child span');
 						let fontWeight = getComputedStyle(name).getPropertyValue('font-weight');
@@ -340,7 +347,7 @@ export default {
 				}
 
 				function logUserOut() {
-					let settings = document.querySelector('[aria-label="Settings, help and more"]');
+					let settings = document.querySelector('#js_19');
 					if(settings) settings.click()
 					let logout = document.querySelector('.__MenuItem[role="presentation"]:last-child');
 					if(logout) logout.click()
@@ -348,7 +355,7 @@ export default {
 				}
 
 				function scrollToBottom() {
-					let scrollTarget = document.querySelector('[aria-label="Messages"]');
+					let scrollTarget = document.querySelector('#js_1');
 					if(!scrollTarget) return;
 					scrollTarget.scrollIntoView({
 						block: 'end',
