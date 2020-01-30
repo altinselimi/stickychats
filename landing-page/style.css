@@ -55,7 +55,7 @@ body {
 	height: 64px;
 	touch-action: none;
 	user-select: none;
-	position: absolute;
+	position: fixed;
 	top: 40px;
 	right: 40px;
 	z-index: 10;
