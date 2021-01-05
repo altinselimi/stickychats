@@ -22,7 +22,7 @@
     "url": "https://github.com/altinselimi/stickychats.git"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "electron-log": "^4.0.4",
     "electron-updater": "^4.2.0",
     "faker": "^4.1.0",
